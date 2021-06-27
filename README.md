@@ -9,6 +9,14 @@ Obs.: o banco foi hospedado online, com 3 usuários cadastrados.
 
 ----
 
+## Como executar
+
+npm install para instalar as dependências
+
+npm start para iniciar a API
+
+----
+
 ### Rotas Read
 
 - Retorna todos os usuários cadastrados
