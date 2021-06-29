@@ -25,7 +25,7 @@ exports.getByNameLastname = async (req, res, next) => {
 
     try {
 
-        let data = await repository.getByNomeSobrenome(req.body.name,req.body.lastName);
+        let data = await repository.getByNomeSobrenome(req.body.name, req.body.lastName);
         res.status(200).send(data);
 
     } catch (e) {
@@ -68,12 +68,12 @@ exports.post = async (req, res, next) => {
 
     let contract = new Validation();
 
-    contract.isRequired(req.body.name,'O nome é requirido');
-    contract.isRequired(req.body.lastName,'O ultimo nome é requirido');
-    contract.isRequired(req.body.nickname,'O apelido é requirido');
-    contract.isEmail(req.body.email,'O email é invalido');
-    contract.hasMaxLen(req.body.nickname, 30 ,'O apelido não deve ter mais que 30 caracteres');
-    contract.hasMaxLen(req.body.bio, 100 ,'A bio não deve ter mais que 100 caracteres');
+    contract.isRequired(req.body.name, 'O nome é requirido');
+    contract.isRequired(req.body.lastName, 'O ultimo nome é requirido');
+    contract.isRequired(req.body.nickname, 'O apelido é requirido');
+    contract.isEmail(req.body.email, 'O email é invalido');
+    contract.hasMaxLen(req.body.nickname, 30, 'O apelido não deve ter mais que 30 caracteres');
+    contract.hasMaxLen(req.body.bio, 100, 'A bio não deve ter mais que 100 caracteres');
 
     //Se os dados forem inválidos
     if (!contract.isValid()) {
@@ -111,6 +111,17 @@ exports.put = async (req, res, next) => {
 
 exports.updateLastAndEmail = async (req, res, next) => {
 
+    let contract = new Validation();
+
+    contract.isRequired(req.body.lastName, 'O ultimo nome é requirido');
+    contract.isEmail(req.body.email, 'O email é invalido');
+
+    //Se os dados forem inválidos
+    if (!contract.isValid()) {
+        res.status(400).send(contract.errors()).end();
+        return;
+    }
+
     try {
 
         let saida = await repository.updateLastAndEmail(req.params.id, req.body);
@@ -126,6 +137,17 @@ exports.updateLastAndEmail = async (req, res, next) => {
 };
 
 exports.updateNickname = async (req, res, next) => {
+
+    let contract = new Validation();
+
+    contract.isRequired(req.body.nickname, 'O apelido é requirido');
+    contract.hasMaxLen(req.body.nickname, 30, 'O apelido não deve ter mais que 30 caracteres');
+
+    //Se os dados forem inválidos
+    if (!contract.isValid()) {
+        res.status(400).send(contract.errors()).end();
+        return;
+    }
 
     try {
 
